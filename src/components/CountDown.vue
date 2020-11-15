@@ -60,7 +60,7 @@ export default {
     },
 
     calculateTimeDiff() {
-      const a = moment([2020, 11, 16, 12]);
+      const a = moment("2020-11-16 12:00");
       const b = moment();
       const diff = moment.duration(a.diff(b));
 

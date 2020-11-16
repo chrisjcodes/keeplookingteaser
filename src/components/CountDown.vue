@@ -1,21 +1,34 @@
 <template>
-  <div class="countdown">
-    <div>
-      <div class="timeblock">
-        <div class="value">{{ timeRemaining.days }}</div>
-        <div class="unit">Days</div>
-      </div>
-      <div class="timeblock">
-        <div class="value">{{ timeRemaining.hours }}</div>
-        <div class="unit">Hours</div>
-      </div>
-      <div class="timeblock">
-        <div class="value">{{ timeRemaining.minutes }}</div>
-        <div class="unit">Minutes</div>
-      </div>
-      <div class="timeblock">
-        <div class="value">{{ timeRemaining.seconds }}</div>
-        <div class="unit">Seconds</div>
+  <div>
+    <div v-if="showVideo" class="video">
+      <vimeo-player
+        :options="{
+          title: false,
+        }"
+        :autoplay="true"
+        :player-height="500"
+        :player-width="800"
+        :video-id="479384904"
+      ></vimeo-player>
+    </div>
+    <div v-if="!showVideo" class="countdown">
+      <div>
+        <div class="timeblock">
+          <div class="value">{{ timeRemaining.days }}</div>
+          <div class="unit">Days</div>
+        </div>
+        <div class="timeblock">
+          <div class="value">{{ timeRemaining.hours }}</div>
+          <div class="unit">Hours</div>
+        </div>
+        <div class="timeblock">
+          <div class="value">{{ timeRemaining.minutes }}</div>
+          <div class="unit">Minutes</div>
+        </div>
+        <div class="timeblock">
+          <div class="value">{{ timeRemaining.seconds }}</div>
+          <div class="unit">Seconds</div>
+        </div>
       </div>
     </div>
   </div>
@@ -25,11 +38,12 @@
 import * as R from "ramda";
 import moment from "moment";
 
-const allAtZero = R.all(R.equals(0));
+const allAtZero = R.all(R.lte(R.__, 0));
 
 export default {
   data() {
     return {
+      showVideo: false,
       timerInterval: null,
       timeRemaining: {
         days: 0,
@@ -43,7 +57,9 @@ export default {
   watch: {
     timeRemaining(newValue) {
       const timeValues = Object.values(newValue);
+      console.log(allAtZero(timeValues));
       if (allAtZero(timeValues)) {
+        this.showVideo = true;
         this.onTimesUp();
       }
     },
@@ -83,6 +99,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.video {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .countdown {
   display: flex;
   justify-content: center;

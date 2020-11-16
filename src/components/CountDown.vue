@@ -2,12 +2,12 @@
   <div>
     <div v-if="showVideo" class="video">
       <vimeo-player
+        class="embed-container"
         :options="{
           title: false,
+          responsive: true,
         }"
         :autoplay="true"
-        :player-height="500"
-        :player-width="800"
         :video-id="479384904"
       ></vimeo-player>
     </div>
@@ -57,7 +57,6 @@ export default {
   watch: {
     timeRemaining(newValue) {
       const timeValues = Object.values(newValue);
-      console.log(allAtZero(timeValues));
       if (allAtZero(timeValues)) {
         this.showVideo = true;
         this.onTimesUp();
@@ -103,7 +102,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+}
+
+.embed-container {
+  width: 100% !important;
 }
 
 .countdown {
